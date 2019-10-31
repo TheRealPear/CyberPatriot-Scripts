@@ -49,10 +49,18 @@ ECHO -----------------
 ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
-ECHO [A] Everything (automated)
-ECHO [B] Find Media Files
-ECHO [C] Fix Firewall
-ECHO [D] Windows Update
-ECHO [E] Disable Admin and Guest Account
+ECHO Please select an option below.
 ECHO.
-PAUSE
+ECHO  [A] Automate Everything
+ECHO  [B] Find Prohibited Media Files
+ECHO  [C] Fix Firewall
+ECHO  [D] Windows Update
+ECHO  [E] Windows Defender
+ECHO  [F] Disable Admin and Guest Account
+ECHO  [G] Password Security Policy
+ECHO  [H] Disable Weak Services/Features
+ECHO.
+SET /P M=Type any [#] and then press [ENTER]:
+ IF %M%==A GOTO automation
+ IF %M%==B GOTO mediafiles
+ IF %M%==C GOTO firewall
