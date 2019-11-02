@@ -51,16 +51,37 @@ ECHO -----------------
 ECHO.
 ECHO Please select an option below.
 ECHO.
-ECHO  [A] Automate Everything
+ECHO  [A] Semi-Automate Everything
 ECHO  [B] Find Prohibited Media Files
 ECHO  [C] Fix Firewall
 ECHO  [D] Windows Update
 ECHO  [E] Windows Defender
 ECHO  [F] Disable Admin and Guest Account
-ECHO  [G] Password Security Policy
+ECHO  [G] Set Password Security Policy
 ECHO  [H] Disable Weak Services/Features
 ECHO.
-SET /P M=Type any [#] and then press [ENTER]:
- IF %M%==A GOTO automation
+SET /P M=Type any [#] and then press [ENTER]: 
+ IF %M%==A GOTO presemiautomation
  IF %M%==B GOTO mediafiles
  IF %M%==C GOTO firewall
+
+:presemiautomation
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO [A] Semi-Automate Everything was selected.
+ECHO.
+ECHO This option will do the following tasks (with the exception for destructive ones).
+ECHO  [*] Fix Firewall
+ECHO  [*] Enable Windows Update
+ECHO  [*] Enable Windows Defender
+ECHO  [*] Disable Admin and Guest Account
+ECHO  [*] Set Password Security Policy
+ECHO  [*] Disable Weak Services/Features
+ECHO.
+SET /P M=Are you sure you want to proceed? [Y/N]: 
+ IF %M%==Y GOTO semiautomation
+ IF %M%==N GOTO menu
