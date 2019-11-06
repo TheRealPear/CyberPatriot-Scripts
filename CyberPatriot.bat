@@ -1,11 +1,33 @@
 @ECHO OFF
 title CyberPatriot
+setlocal
+for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
+IF "%version%" == "10.0" echo Windows 10 detected!
+IF "%version%" == "6.3" echo Windows 8.1 detected!
+IF "%version%" == "6.2" echo Windows 8 detected!
+IF "%version%" == "6.1" echo Windows 7 detected!
+IF "%version%" == "6.0" echo Windows Vista or older detected! & goto unsupportedversion
+IF "%version%" == "5.1" echo Windows Vista or older detected! & goto unsupportedversion
+endlocal
+
+:unsupportedversion
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO You are running on an unsupported Windows version.
+ECHO This script will only work on Windows 7 and higher.
+ECHO.
+PAUSE
+EXIT
+
 :admincheck
 NET SESSION >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
     ECHO.
     ECHO Administrator privileges detected!
-    GOTO loading
+    GOTO warning
 ) ELSE (
     ECHO.
     ECHO -----------------
@@ -22,7 +44,7 @@ IF %ERRORLEVEL% EQU 0 (
     EXIT
 )
 
-:loading
+:warning
 ECHO.
 ECHO ---------------------------
 ECHO   Welcome to CyberPatriot
@@ -36,8 +58,8 @@ ECHO  [*] The CCS service is running.
 ECHO  [*] Enter your team's unique number.
 ECHO  [*] Answer the forensic questions.
 ECHO.
-ECHO This script will cause irreversible changes to the image
-ECHO that may destroy evidence to help you answer the forensic questions.
+ECHO This script will cause irreversible changes to the image that
+ECHO may destroy evidence to help you answer the forensic questions.
 ECHO.
 PAUSE
 GOTO menu
@@ -64,6 +86,34 @@ SET /P M=Type any [#] and then press [ENTER]:
  IF %M%==A GOTO presemiautomation
  IF %M%==B GOTO mediafiles
  IF %M%==C GOTO firewall
+ IF %M%==D GOTO windowsupdate
+ IF %M%==E GOTO windowsdefender
+ IF %M%==F GOTO adminguestaccounts
+ IF %M%==G GOTO passwordpolicy
+ IF %M%==H GOTO weakservices
+
+:mediafiles
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Deleting prohibited media files...
+ECHO.
+del /s /q /f C:\*.mp3
+ECHO.
+ECHO All prohibited media files has been deleted.
+
+:firewall
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Attempting to repair Windows Firewall...
+ECHO.
 
 :presemiautomation
 CLS
@@ -85,3 +135,13 @@ ECHO.
 SET /P M=Are you sure you want to proceed? [Y/N]: 
  IF %M%==Y GOTO semiautomation
  IF %M%==N GOTO menu
+
+:semiautomation
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Starting semi-automation...
+
