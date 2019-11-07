@@ -6,8 +6,8 @@ IF "%version%" == "10.0" echo Windows 10 detected!
 IF "%version%" == "6.3" echo Windows 8.1 detected!
 IF "%version%" == "6.2" echo Windows 8 detected!
 IF "%version%" == "6.1" echo Windows 7 detected!
-IF "%version%" == "6.0" echo Windows Vista or older detected! & goto unsupportedversion
-IF "%version%" == "5.1" echo Windows Vista or older detected! & goto unsupportedversion
+IF "%version%" == "6.0" echo Windows Vista detected! & goto unsupportedversion
+IF "%version%" == "5.1" echo Windows XP or older detected! & goto unsupportedversion
 endlocal
 
 :unsupportedversion
