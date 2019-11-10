@@ -1,5 +1,6 @@
 @ECHO OFF
 title CyberPatriot
+REM Check Windows version before running the script as it uses specific stuff not found in older version.
 setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 IF "%version%" == "10.0" echo Windows 10 detected! && goto admincheck
@@ -11,6 +12,7 @@ IF "%version%" == "5.1" echo Windows XP or older detected! && goto unsupportedve
 endlocal
 
 :unsupportedversion
+REM Inform the user that they are on an unsupported version.
 ECHO.
 ECHO -----------------
 ECHO   CyberPatriot
@@ -23,6 +25,7 @@ PAUSE
 EXIT
 
 :admincheck
+REM Check for administrator privileges. Some commands will not work properly without this.
 NET SESSION >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
     ECHO.
@@ -101,6 +104,7 @@ ECHO -----------------
 ECHO.
 ECHO Deleting prohibited media files...
 ECHO.
+REM Search the C: drive for all .mp3 files.
 del /s /q /f C:\*.mp3
 ECHO.
 ECHO All prohibited media files has been deleted.
