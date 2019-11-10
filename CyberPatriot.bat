@@ -144,4 +144,4 @@ ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
 ECHO Starting semi-automation...
-
+PAUSE
