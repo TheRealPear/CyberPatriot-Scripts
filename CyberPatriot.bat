@@ -68,6 +68,7 @@ PAUSE
 GOTO menu
 
 :menu
+REM First interactive menu.
 CLS
 ECHO.
 ECHO -----------------
@@ -120,6 +121,7 @@ ECHO Attempting to repair Windows Firewall...
 ECHO.
 
 :presemiautomation
+REM Confirm that the user wants to go with semi-automation.
 CLS
 ECHO.
 ECHO -----------------
@@ -141,6 +143,7 @@ SET /P M=Are you sure you want to proceed? [Y/N]:
  IF %M%==N GOTO menu
 
 :semiautomation
+REM Open simplified.bat in a new window and display this screen until the simplified window finish.
 CLS
 ECHO.
 ECHO -----------------
