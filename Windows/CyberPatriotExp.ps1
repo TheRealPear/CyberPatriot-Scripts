@@ -1,2 +1,2 @@
-ECHO Currently in testing.
+Write-Output Currently in testing.
 PAUSE
