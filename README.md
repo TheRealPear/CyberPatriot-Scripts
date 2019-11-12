@@ -1,4 +1,5 @@
 # CyberPatriot Scripts
+Semi-automatic security hardening script for Windows and Linux.
 Used for the ***REMOVED*** CyberPatriot team, 2019-2020.
 
 ## Windows
