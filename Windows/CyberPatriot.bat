@@ -57,6 +57,7 @@ ECHO Before using this script, be sure you have done the following:
 ECHO.
 ECHO  [*] Follow the CyberPatriot rules.
 ECHO  [*] Use the correct image (Windows 8.1, 10, or Server 2016)
+ECHO  [*] You are able to connect to CyberPatriot and Google.
 ECHO  [*] The CCS service is running.
 ECHO  [*] Enter your team's unique number.
 ECHO  [*] Answer the forensic questions.
@@ -122,16 +123,13 @@ ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
 ECHO Adding rules to the firewall...
-REM Disable all Remote Assistance ports.
-netsh advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL
-netsh advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL
-netsh advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL
-netsh advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL
-netsh advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL
-netsh advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL
-REM Disable telnet because it is an outdated application protocol.
-netsh advfirewall firewall set rule name="Telnet Server" new enable=no >NUL
-netsh advfirewall firewall set rule name="netcat" new enable=no >NUL
+REM Disable all Remote Assistance ports and inform the user when the rule has been updated.
+netsh advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance (DCOM-In)
+netsh advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (PNRP-In)
+netsh advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (RA Server TCP-In)
+netsh advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (SSDP TCP-In)
+netsh advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [5/x] Updated rule: Remote Assistance (RA Server TCP-In)
+netsh advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In)
 ECHO.
 PAUSE
 GOTO MENU
