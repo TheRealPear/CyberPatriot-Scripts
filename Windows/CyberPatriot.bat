@@ -134,6 +134,22 @@ ECHO.
 PAUSE
 GOTO MENU
 
+:passwordpolicy
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Setting password policy...
+ECHO.
+REM Set minimum password length to ten characters.
+NET accounts /minpwlen:10 && ECHO [1/x] Updated minimum password length rule.
+REM Force password to be changed every thirty days.
+NET accounts /maxpwage:30 && ECHO [2/x] Updated maximum password age rule.
+REM Make it so that five days has to pass in order to change the password.
+NET accounts /minpwage:5 && ECHO [3/x] Updated minimum days required to change password rule.
+
 :weakservices
 CLS
 ECHO.
