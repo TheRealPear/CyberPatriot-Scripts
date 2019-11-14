@@ -88,14 +88,14 @@ ECHO  [G] Set Password Security Policy
 ECHO  [H] Disable Weak Services/Features
 ECHO.
 SET /P M=Type any [#] and then press [ENTER]: 
- IF %M%==A GOTO presemiautomation
- IF %M%==B GOTO mediafiles
- IF %M%==C GOTO firewall
- IF %M%==D GOTO windowsupdate
- IF %M%==E GOTO windowsdefender
- IF %M%==F GOTO adminguestaccounts
- IF %M%==G GOTO passwordpolicy
- IF %M%==H GOTO weakservices
+ IF /I %M%==A GOTO presemiautomation
+ IF /I %M%==B GOTO mediafiles
+ IF /I %M%==C GOTO firewall
+ IF /I %M%==D GOTO windowsupdate
+ IF /I %M%==E GOTO windowsdefender
+ IF /I %M%==F GOTO adminguestaccounts
+ IF /I %M%==G GOTO passwordpolicy
+ IF /I %M%==H GOTO weakservices
 
 :mediafiles
 CLS
@@ -104,12 +104,12 @@ ECHO -----------------
 ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
-ECHO Deleting prohibited media files...
+ECHO Deleting prohibited media files. This may take a while...
 ECHO.
 REM Search the C: drive for all .mp2 files.
-DEL /s /q /f C:\*.mp2
+DEL /s /q /f C:\*.mp2 && ECHO [1/x] Searched and deleted all .mp2 files.
 REM Search the C: drive for all .mp3 files.
-del /s /q /f C:\*.mp3
+del /s /q /f C:\*.mp3 && ECHO [2/x] Searched and deleted all .mp2 files.
 ECHO.
 ECHO All prohibited media files has been deleted.
 PAUSE
@@ -149,6 +149,9 @@ REM Force password to be changed every thirty days.
 NET accounts /maxpwage:30 && ECHO [2/x] Updated maximum password age rule.
 REM Make it so that five days has to pass in order to change the password.
 NET accounts /minpwage:5 && ECHO [3/x] Updated minimum days required to change password rule.
+ECHO.
+PAUSE
+GOTO MENU
 
 :weakservices
 CLS
@@ -233,8 +236,8 @@ ECHO  [*] Set Password Security Policy
 ECHO  [*] Disable Weak Services/Features
 ECHO.
 SET /P M=Are you sure you want to proceed? [Y/N]: 
- IF %M%==Y GOTO semiautomation
- IF %M%==N GOTO menu
+ IF /I %M%==Y GOTO semiautomation
+ IF /I %M%==N GOTO menu
 
 :semiautomation
 REM Open simplified.bat in a new window and display this screen until the simplified window finish.
