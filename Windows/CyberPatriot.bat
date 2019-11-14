@@ -86,6 +86,7 @@ ECHO  [E] Windows Defender
 ECHO  [F] Disable Admin and Guest Account
 ECHO  [G] Set Password Security Policy
 ECHO  [H] Disable Weak Services/Features
+ECHO  [I] Extra Windows Settings
 ECHO.
 SET /P M=Type any [#] and then press [ENTER]: 
  IF /I %M%==A GOTO presemiautomation
@@ -96,6 +97,7 @@ SET /P M=Type any [#] and then press [ENTER]:
  IF /I %M%==F GOTO adminguestaccounts
  IF /I %M%==G GOTO passwordpolicy
  IF /I %M%==H GOTO weakservices
+ IF /I %M%==I GOTO extrawindowssetting
 
 :mediafiles
 CLS
@@ -124,12 +126,12 @@ ECHO -----------------
 ECHO.
 ECHO Adding rules to the firewall...
 REM Disable all Remote Assistance ports and inform the user when the rule has been updated.
-netsh advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance (DCOM-In)
-netsh advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (PNRP-In)
-netsh advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (RA Server TCP-In)
-netsh advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (SSDP TCP-In)
-netsh advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [5/x] Updated rule: Remote Assistance (RA Server TCP-In)
-netsh advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance (DCOM-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (PNRP-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (RA Server TCP-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (SSDP TCP-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [5/x] Updated rule: Remote Assistance (RA Server TCP-In)
+NETSH advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In)
 ECHO.
 PAUSE
 GOTO MENU
@@ -144,11 +146,20 @@ ECHO.
 ECHO Setting password policy...
 ECHO.
 REM Set minimum password length to ten characters.
-NET accounts /minpwlen:10 && ECHO [1/x] Updated minimum password length rule.
+NET accounts /minpwlen:10 >NUL && ECHO [1/5] Updated minimum password length rule.
 REM Force password to be changed every thirty days.
-NET accounts /maxpwage:30 && ECHO [2/x] Updated maximum password age rule.
+NET accounts /maxpwage:30 >NUL && ECHO [2/5] Updated maximum password age rule.
 REM Make it so that five days has to pass in order to change the password.
-NET accounts /minpwage:5 && ECHO [3/x] Updated minimum days required to change password rule.
+NET accounts /minpwage:5 >NUL && ECHO [3/5] Updated minimum password age rule.
+REM Set maximum amount of failed sign-in attempts before locking the account.
+NET accounts /lockoutthreshold:5 >NUL && ECHO [4/5] Updated lockout threshold rule.
+REM Set the amount of previous passwored remembered so that users can't reuse the same passwords.
+NET accounts /UNIQUEPW:5 >NUL && ECHO [5/5] Updated password history rule.
+ECHO.
+ECHO Be sure to open Local Security Policy and set the following rules to:
+ECHO  [*] Password must met complexity requirements = Enabled
+ECHO  [*] Store passwords using reversible encryption = Enabled
+ECHO (Due to technical limitations, it has to be done manually.)
 ECHO.
 PAUSE
 GOTO MENU
@@ -216,6 +227,15 @@ dism /online /disable-feature /featurename:TelnetClient >NUL
 dism /online /disable-feature /featurename:TelnetServer >NUL
 PAUSE
 GOTO menu
+
+:extrawindowssetting
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Setting extra Windows settings...
 
 :presemiautomation
 REM Confirm that the user wants to go with semi-automation.
