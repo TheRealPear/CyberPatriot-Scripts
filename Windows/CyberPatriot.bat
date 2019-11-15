@@ -81,23 +81,21 @@ ECHO.
 ECHO  [A] Semi-Automate Everything
 ECHO  [B] Find Prohibited Media Files
 ECHO  [C] Fix Firewall
-ECHO  [D] Windows Update
+ECHO  [D] Extra Windows Settings
 ECHO  [E] Windows Defender
 ECHO  [F] Disable Admin and Guest Account
 ECHO  [G] Set Password Security Policy
 ECHO  [H] Disable Weak Services/Features
-ECHO  [I] Extra Windows Settings
 ECHO.
 SET /P M=Type any [#] and then press [ENTER]: 
  IF /I %M%==A GOTO presemiautomation
  IF /I %M%==B GOTO mediafiles
  IF /I %M%==C GOTO firewall
- IF /I %M%==D GOTO windowsupdate
+ IF /I %M%==D GOTO extrawindowssetting
  IF /I %M%==E GOTO windowsdefender
  IF /I %M%==F GOTO adminguestaccounts
  IF /I %M%==G GOTO passwordpolicy
  IF /I %M%==H GOTO weakservices
- IF /I %M%==I GOTO extrawindowssetting
 
 :mediafiles
 CLS
@@ -111,7 +109,7 @@ ECHO.
 REM Search the C: drive for all .mp2 files.
 DEL /s /q /f C:\*.mp2 && ECHO [1/x] Searched and deleted all .mp2 files.
 REM Search the C: drive for all .mp3 files.
-del /s /q /f C:\*.mp3 && ECHO [2/x] Searched and deleted all .mp2 files.
+del /s /q /f C:\*.mp3 && ECHO [2/x] Searched and deleted all .mp3 files.
 ECHO.
 ECHO All prohibited media files has been deleted.
 PAUSE
@@ -125,14 +123,47 @@ ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
 ECHO Adding rules to the firewall...
-REM Disable all Remote Assistance ports and inform the user when the rule has been updated.
-NETSH advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance (DCOM-In)
-NETSH advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (PNRP-In)
-NETSH advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (RA Server TCP-In)
-NETSH advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (SSDP TCP-In)
-NETSH advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [5/x] Updated rule: Remote Assistance (RA Server TCP-In)
-NETSH advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In)
 ECHO.
+REM Disable all Remote Assistance ports and inform the user when the rule has been updated.
+NETSH advfirewall firewall set rule group="Remote Assistance" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance.
+NETSH advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (DCOM-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (PNRP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (RA Server TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [5/x] Updated rule: Remote Assistance (SSDP TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [6/x] Updated rule: Remote Assistance (RA Server TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In).
+ECHO.
+PAUSE
+GOTO MENU
+
+:extrawindowssetting
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Setting extra Windows settings...
+ECHO.
+REM Enable automatic Windows Update.
+REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 3 /f >NUL && ECHO [1/x] Updated registry key: AUOptions (Enabled automatic Windows update).
+REM Disable Remote Desktop.
+REG add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f >NUL && ECHO [2/x] Updated registry key: fDenyTSConnections (Disabled Remote Desktop).
+REG add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f >NUL && ECHO [3/x] Updated registry key: UserAuthentication.
+REM Enable Windows SmartScreen.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" /v "EnableSmartScreen" /t REG_DWORD /d 1 /f >NUL && ECHO [4/x] Updated registry key: EnabledSmartScreen (Enabled SmartScreen).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" /v "ShellSmartScreenLevel" /t REG_SZ /d "Warn" /f >NUL && ECHO [5/x] Updated registry key: ShellSmartScreenLevel.
+REM Enable Windows Defender.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t REG_DWORD /d 0 /f >NUL && ECHO [6/x] Updated registry key: DisableAntiSpyware (Enabled AntiSpyware).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v "ServiceKeepAlive" /t REG_DWORD /d 1 /f >NUL && ECHO [7/x] Updated registry key: ServiceKeepAlive.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableIOAVProtection" /t REG_DWORD /d 0 /f >NUL && ECHO [8/x] Updated registry key: DisableIOAVProtection (Enabled IOAVProtection).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /t REG_DWORD /d 0 /f >NUL && ECHO [9/x] Updated registry key: DisableRealtimeMonitoring (Enabled RealtimeMonitoring).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v "CheckForSignaturesBeforeRunningScan" /t REG_DWORD /d 1 /f >NUL && ECHO [10/x] Updated registry key: CheckForSignaturesBeforeRunningScan.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v "DisableHeuristics" /t REG_DWORD /d 0 /f >NUL && ECHO [11/x] Updated registry key: DisableHeuristics (Enabled Heuristics).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments" /v "ScanWithAntiVirus" /t REG_DWORD /d 3 /f >NUL && ECHO [12/x] Updated registry key: ScanWithAntiVirus.
+REM Show file extensions.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\HideFileExt" /v "CheckedValue" /t REG_DWORD /d 0 /f >NUL && ECHO [13/x] Updated registry key: CheckedValue.
+REG add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f >NUL && ECHO [14/x] Updated registry key: HideFileExt (Show file extensions).
 PAUSE
 GOTO MENU
 
@@ -154,11 +185,11 @@ NET accounts /minpwage:5 >NUL && ECHO [3/5] Updated minimum password age rule.
 REM Set maximum amount of failed sign-in attempts before locking the account.
 NET accounts /lockoutthreshold:5 >NUL && ECHO [4/5] Updated lockout threshold rule.
 REM Set the amount of previous passwored remembered so that users can't reuse the same passwords.
-NET accounts /UNIQUEPW:5 >NUL && ECHO [5/5] Updated password history rule.
+NET accounts /UNIQUEPW:5 >NUL && ECHO [5/5] Updated unique password history rule.
 ECHO.
 ECHO Be sure to open Local Security Policy and set the following rules to:
 ECHO  [*] Password must met complexity requirements = Enabled
-ECHO  [*] Store passwords using reversible encryption = Enabled
+ECHO  [*] Store passwords using reversible encryption = Disabled
 ECHO (Due to technical limitations, it has to be done manually.)
 ECHO.
 PAUSE
@@ -228,15 +259,6 @@ dism /online /disable-feature /featurename:TelnetServer >NUL
 PAUSE
 GOTO menu
 
-:extrawindowssetting
-CLS
-ECHO.
-ECHO -----------------
-ECHO   CyberPatriot
-ECHO -----------------
-ECHO.
-ECHO Setting extra Windows settings...
-
 :presemiautomation
 REM Confirm that the user wants to go with semi-automation.
 CLS
@@ -267,5 +289,6 @@ ECHO -----------------
 ECHO   CyberPatriot
 ECHO -----------------
 ECHO.
-ECHO Starting semi-automation...
+ECHO For now, open simplified.bat from the File Explorer.
 PAUSE
+GOTO MENU
