@@ -164,6 +164,13 @@ REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\A
 REM Show file extensions.
 REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\HideFileExt" /v "CheckedValue" /t REG_DWORD /d 0 /f >NUL && ECHO [13/x] Updated registry key: CheckedValue.
 REG add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f >NUL && ECHO [14/x] Updated registry key: HideFileExt (Show file extensions).
+REM Harden Internet Explorer security.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" /v "DEPOff" /t REG_DWORD /d 0 /f >NUL && ECHO [15/x] Updated registry key: DEPOff (Securing Internet Explorer).
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" /v "Isolation64Bit" /t REG_DWORD /d 1 /f >NUL && ECHO [16/x] Updated registry key: Isolation64Bit.
+REG add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Internet Explorer\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d 1 /f >NUL && ECHO [17/x] Updated registry key: EnabledV9.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d 1 /f >NUL && ECHO [18/x] Updated registry key: EnabledV9 (part 2).
+REM Enable HTTP/2.0 security on Internet Explorer.
+REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings" /v "EnableHTTP2" /t REG_DWORD /d 1 /f && ECHO [19/x] Updated registry key: EnableHTTP2.
 PAUSE
 GOTO MENU
 
