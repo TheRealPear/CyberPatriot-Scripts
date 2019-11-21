@@ -129,13 +129,15 @@ ECHO.
 ECHO Adding rules to the firewall...
 ECHO.
 REM Disable all Remote Assistance ports and inform the user when the rule has been updated.
-NETSH advfirewall firewall set rule group="Remote Assistance" new enable=no >NUL && ECHO [1/x] Updated rule: Remote Assistance.
-NETSH advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance (DCOM-In).
-NETSH advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (PNRP-In).
-NETSH advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (RA Server TCP-In).
-NETSH advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [5/x] Updated rule: Remote Assistance (SSDP TCP-In).
-NETSH advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [6/x] Updated rule: Remote Assistance (RA Server TCP-In).
-NETSH advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (TCP-In).
+REM Untick the Remote Assistance option, even though this is not a firewall rule.
+REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f >NUL && ECHO [1/x]
+NETSH advfirewall firewall set rule group="Remote Assistance" new enable=no >NUL && ECHO [2/x] Updated rule: Remote Assistance.
+NETSH advfirewall firewall set rule name="Remote Assistance (DCOM-In)" new enable=no >NUL && ECHO [3/x] Updated rule: Remote Assistance (DCOM-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (PNRP-In)" new enable=no >NUL && ECHO [4/x] Updated rule: Remote Assistance (PNRP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (RA Server TCP-In)" new enable=no >NUL && ECHO [5/x] Updated rule: Remote Assistance (RA Server TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP TCP-In)" new enable=no >NUL && ECHO [6/x] Updated rule: Remote Assistance (SSDP TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (SSDP UDP-In)" new enable=no >NUL  && ECHO [7/x] Updated rule: Remote Assistance (RA Server TCP-In).
+NETSH advfirewall firewall set rule name="Remote Assistance (TCP-In)" new enable=no >NUL && ECHO [8/x] Updated rule: Remote Assistance (TCP-In).
 ECHO.
 PAUSE
 GOTO menu
@@ -303,6 +305,8 @@ ECHO Disabling Remote Desktop...
 REM Disable Remote Desktop.
 REG add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f >NUL && ECHO [1/x] Updated registry key: fDenyTSConnections (Disabled Remote Desktop).
 REG add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f >NUL && ECHO [2/x] Updated registry key: UserAuthentication.
+SC stop "TermService" & SC config "TermService" start= disabled
+SC stop "SessionEnv" & SC config "SessionEnv" start= disabled
 ECHO.
 PAUSE
 GOTO menu
