@@ -199,6 +199,25 @@ REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" 
 REG add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Internet Explorer\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d 1 /f >NUL && ECHO [18/x] Updated registry key: EnabledV9.
 REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d 1 /f >NUL && ECHO [19/x] Updated registry key: EnabledV9 (part 2).
 REG add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings" /v "EnableHTTP2" /t REG_DWORD /d 1 /f >NUL && ECHO [20/x] Updated registry key: EnableHTTP2.
+ECHO.
+PAUSE
+GOTO menu
+
+:adminguestaccounts
+CLS
+ECHO.
+ECHO -----------------
+ECHO   CyberPatriot
+ECHO -----------------
+ECHO.
+ECHO Disabling Administrator and Guest account...
+ECHO.
+NET user guest /active:no >NUL && ECHO [1/2] Disabled Guest account.
+NET user administrator /active:no >NUL && ECHO [2/2] Disabled Administrator account.
+ECHO.
+ECHO Keep in mind that the Administrator account is now disabled. Be sure to write down the other
+ECHO accounts' passwords now in case your user account comes up with an issue.
+ECHO.
 PAUSE
 GOTO menu
 
